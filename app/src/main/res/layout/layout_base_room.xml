@@ -1,0 +1,68 @@
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/root_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <!--房间标题栏-->
+        <include
+            android:id="@+id/toolbar"
+            layout="@layout/bar_room_title"/>
+
+        <!--房间聊天布局-->
+        <com.dou361.live.ui.widget.RoomMessagesView
+            android:id="@+id/message_view"
+            android:layout_width="match_parent"
+            android:layout_height="170dp"
+            android:layout_alignParentBottom="true"
+            android:visibility="invisible"/>
+
+        <!--弹幕布局-->
+        <com.dou361.live.ui.widget.BarrageLayout
+            android:id="@+id/barrage_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/message_view"
+            android:layout_marginBottom="10dp"/>
+
+        <!--视频点赞布局-->
+        <com.dou361.live.ui.widget.PeriscopeLayout
+            android:id="@+id/periscope_layout"
+            android:layout_width="150dp"
+            android:layout_height="190dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="42dp"/>
+
+        <!--礼物布局-->
+        <com.dou361.live.ui.widget.GiftLayout
+            android:id="@+id/gift_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginBottom="5dp"/>
+
+        <!--底部操作面板-->
+        <include
+            android:id="@+id/bottom_bar"
+            layout="@layout/bar_room_bottom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:visibility="invisible"/>
+    </RelativeLayout>
+
+
+    <!--私聊面板-->
+    <RelativeLayout
+        android:id="@+id/message_container"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_alignParentBottom="true"/>
+
+</RelativeLayout>
+

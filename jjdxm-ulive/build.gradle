@@ -1,0 +1,60 @@
+apply plugin: 'com.android.library'
+
+ext {
+    //类库的module名、bintray上项目名、artifactId最好是一致的
+    jjdxm_bintrayRepo = 'maven'
+    jjdxm_bintrayName = 'jjdxm-ulive'
+
+    jjdxm_packaging = 'aar'
+    jjdxm_groupId = 'com.dou361.ulive'
+    jjdxm_artifactId = 'jjdxm-ulive'
+
+    jjdxm_libraryVersion = '1.0.0'
+    jjdxm_libraryName = 'jjdxm-ulive'
+    jjdxm_libraryDescription = 'this is a ulive library of the application'
+
+    jjdxm_siteUrl = 'https://github.com/jjdxmashl/jjdxm_ulive'
+    jjdxm_gitUrl = 'https://github.com/jjdxmashl/jjdxm_ulive.git'
+
+    jjdxm_developerId = 'jjdxmashl'
+    jjdxm_developerName = 'jjdxmashl'
+    jjdxm_developerEmail = '316988670@qq.com'
+
+    jjdxm_licenseName = 'The Apache Software License, Version 2.0'
+    jjdxm_licenseUrl = 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+    jjdxm_allLicenses = ["Apache-2.0"]
+
+    jjdxm_singlePath = 'build/intermediates/classes/release'
+    jjdxm_singleJar = jjdxm_artifactId+'-'+jjdxm_libraryVersion+'.jar'
+}
+
+android {
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
+
+    defaultConfig {
+        minSdkVersion rootProject.ext.jjdxm_minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
+        versionCode rootProject.ext.jjdxm_versionCode
+        versionName rootProject.ext.jjdxm_versionName
+    }
+    lintOptions {
+        abortOnError false
+    }
+    buildTypes {
+        release {
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+}
+
+dependencies {
+    compile fileTree(include: ['*.jar'], dir: 'libs')
+    testCompile 'junit:junit:4.12'
+    compile rootProject.ext.jjdxm_v7
+    compile rootProject.ext.jjdxm_v7_preference
+}
+
+//apply from: 'https://raw.githubusercontent.com/jjdxmashl/jjdxm_ecodingprocess/master/bulidlib.gradle'
+//apply from: 'https://raw.githubusercontent.com/jjdxmashl/jjdxm_ecodingprocess/master/bintray.gradle'

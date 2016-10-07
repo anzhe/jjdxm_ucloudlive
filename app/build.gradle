@@ -1,0 +1,52 @@
+apply plugin: 'com.android.application'
+apply plugin: 'com.neenbedankt.android-apt'
+
+android {
+  compileSdkVersion 23
+  buildToolsVersion "23.0.3"
+
+  defaultConfig {
+    applicationId "com.dou361.live"
+    minSdkVersion 15
+    targetSdkVersion 22
+    versionCode 1
+    versionName "1.0"
+//    ndk {
+//      abiFilter 'armeabi'
+//    }
+  }
+  buildTypes {
+    release {
+      minifyEnabled false
+      proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+    }
+  }
+  lintOptions {
+    checkReleaseBuilds false
+    // Or, if you prefer, you can continue to check for errors in release builds,
+    // but continue the build even when errors are found:
+    abortOnError false
+  }
+}
+
+dependencies {
+  compile fileTree(dir: 'libs', include: ['*.jar'])
+  testCompile 'junit:junit:4.12'
+
+
+  compile rootProject.ext.jjdxm_v7
+  compile rootProject.ext.jjdxm_design
+  apt 'com.jakewharton:butterknife-compiler:8.0.1'
+  compile 'com.jakewharton:butterknife:8.0.1'
+  compile 'com.github.florent37:viewanimator:1.0.4'
+  //自定义view类库
+  compile 'com.dou361.customui:jjdxm-customui:1.0.2'
+  //工具类类库
+  compile 'com.dou361.baseutils:jjdxm-baseutils:1.0.4'
+  //沉浸式一体化
+  compile 'com.dou361.statusbar:jjdxm-statusbar:1.0.0'
+  //环信im
+  compile project(':easeui')
+  //ucloud直播
+  compile project(':jjdxm-ulive')
+}
