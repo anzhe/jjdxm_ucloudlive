@@ -341,6 +341,7 @@ public abstract class BaseRoomActivity extends BaseActivity {
                     @Override
                     public void onHiderBottomBar() {
                         bottomBar.setVisibility(View.VISIBLE);
+                        Utils.hideKeyboard(messageView.getInputView());
                     }
 
                     @Override

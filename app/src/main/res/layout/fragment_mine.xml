@@ -149,9 +149,9 @@
     </LinearLayout>
 
     <RelativeLayout
+        android:id="@+id/ll_about"
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_normal_height"
-        android:id="@+id/ll_about"
         android:layout_marginTop="10dp"
         android:background="@drawable/live_white_selector"
         android:clickable="true"
@@ -235,7 +235,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_normal_height"
         android:layout_marginTop="10dp"
-        android:background="@drawable/live_white_selector"
+        android:background="@drawable/live_blue_selector"
         android:text="退出登录"
         android:textColor="@color/common_red"
         />
