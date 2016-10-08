@@ -25,7 +25,7 @@
         android:layout_above="@id/ll_indicator"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="24dp"
-        android:background="@drawable/shape_btn_guide_select"
+        android:background="@drawable/live_shape_guide_select"
         android:orientation="vertical"
         android:paddingBottom="4dp"
         android:paddingLeft="8dp"

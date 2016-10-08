@@ -9,7 +9,6 @@ import android.support.v4.widget.DrawerLayout;
 import android.view.Gravity;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.ViewStub;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
 import android.widget.Button;
@@ -19,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.dou361.baseutils.utils.LogUtils;
 import com.dou361.baseutils.utils.UIUtils;
 import com.dou361.customui.ui.AlertView;
@@ -33,6 +33,7 @@ import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
+import com.hyphenate.easeui.widget.EaseImageView;
 import com.ucloud.common.util.DeviceUtils;
 import com.ucloud.live.UEasyStreaming;
 import com.ucloud.live.UStreamingProfile;
@@ -77,12 +78,18 @@ public class StartLiveActivity extends BaseRoomActivity
     View ll_anchor;
     @BindView(R.id.tv_username)
     TextView usernameView;
+    @BindView(R.id.tv_stop_username)
+    TextView tv_stop_username;
+    @BindView(R.id.eiv_stop_avatar)
+    EaseImageView eiv_stop_avatar;
     @BindView(R.id.tv_follow)
     TextView tv_follow;
     @BindView(R.id.btn_start)
     Button startBtn;
     @BindView(R.id.finish_frame)
-    ViewStub liveEndLayout;
+    View liveEndLayout;
+    @BindView(R.id.right_drawer)
+    View right_drawer;
     @BindView(R.id.cover_image)
     ImageView coverImage;
     @BindView(R.id.img_bt_switch_camera)
@@ -227,9 +234,12 @@ public class StartLiveActivity extends BaseRoomActivity
                 .show();
     }
 
-    @OnClick({R.id.img_bt_switch_camera, R.id.btn_start, R.id.img_bt_close, R.id.img_bt_switch_voice, R.id.img_bt_switch_light})
+    @OnClick({R.id.live_close_confirm, R.id.img_bt_switch_camera, R.id.btn_start, R.id.img_bt_close, R.id.img_bt_switch_voice, R.id.img_bt_switch_light})
     public void onClick(View v) {
         switch (v.getId()) {
+            case R.id.live_close_confirm:
+                onBackPressed();
+                break;
             case R.id.img_bt_switch_camera:
                 /**
                  * 切换摄像头
@@ -296,22 +306,20 @@ public class StartLiveActivity extends BaseRoomActivity
     private void showConfirmCloseLayout() {
         //显示封面
         coverImage.setVisibility(View.VISIBLE);
+        right_drawer.setVisibility(View.GONE);
+        liveEndLayout.setVisibility(View.VISIBLE);
+        mDrawerLayout.removeView(right_drawer);
         List<LiveRoom> liveRoomList = TestRoomLiveRepository.getLiveRoomList();
         for (LiveRoom liveRoom : liveRoomList) {
             if (liveRoom.getId().equals(liveId)) {
                 coverImage.setImageResource(liveRoom.getCover());
+                Glide.with(mContext)
+                        .load(liveRoom.getCover())
+                        .placeholder(R.color.placeholder)
+                        .into(eiv_stop_avatar);
             }
         }
-        View view = liveEndLayout.inflate();
-        Button closeConfirmBtn = (Button) view.findViewById(R.id.live_close_confirm);
-        TextView usernameView = (TextView) view.findViewById(R.id.tv_username);
-        usernameView.setText(EMClient.getInstance().getCurrentUser());
-        closeConfirmBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                finish();
-            }
-        });
+        tv_stop_username.setText(EMClient.getInstance().getCurrentUser());
     }
 
     public void handleUpdateCountdown(final int count) {

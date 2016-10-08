@@ -69,7 +69,6 @@ public class BarrageLayout extends LinearLayout {
         public void handleMessage(Message msg) {
             int what = msg.what;
             final View barrageView = (View) msg.obj;
-            System.out.println("what = " + what);
             if (what == 0) {
                 container2.addView(barrageView);
             } else {
@@ -89,7 +88,7 @@ public class BarrageLayout extends LinearLayout {
     };
 
     private void init(Context context, AttributeSet attrs) {
-        LayoutInflater.from(context).inflate(R.layout.widget_barrage_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.live_widget_barrage_layout, this);
         ButterKnife.bind(this);
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
         screenWidth = wm.getDefaultDisplay().getWidth();
@@ -106,7 +105,7 @@ public class BarrageLayout extends LinearLayout {
     }
 
     private View newBarrageView(String msgContent, String username) {
-        View barrageView = LayoutInflater.from(getContext()).inflate(R.layout.widget_right_barrage, null);
+        View barrageView = LayoutInflater.from(getContext()).inflate(R.layout.live_widget_right_barrage, null);
         TextView nameView = (TextView) barrageView.findViewById(R.id.name);
         TextView contentView = (TextView) barrageView.findViewById(R.id.content);
         nameView.setText(username);

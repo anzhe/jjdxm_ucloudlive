@@ -15,6 +15,7 @@
         >
 
         <com.hyphenate.easeui.widget.EaseImageView
+            android:id="@+id/eiv_stop_avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
             android:layout_marginTop="100dp"
@@ -22,7 +23,7 @@
             />
 
         <TextView
-            android:id="@+id/tv_username"
+            android:id="@+id/tv_stop_username"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
@@ -93,19 +94,18 @@
 
         </LinearLayout>
 
-
+        <Button
+            android:id="@+id/live_close_confirm"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/button_normal_height"
+            android:layout_marginTop="24dp"
+            android:layout_weight="0"
+            android:background="@drawable/live_blue_selector"
+            android:text="确认"
+            android:textColor="@color/common_white"
+            android:textSize="18sp"
+            />
     </LinearLayout>
-
-    <Button
-        android:id="@+id/live_close_confirm"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/button_normal_height"
-        android:layout_weight="0"
-        android:background="@drawable/common_black_btn_bg"
-        android:text="确认"
-        android:textColor="@color/common_white"
-        android:textSize="18sp"
-        />
 
 
 </LinearLayout>

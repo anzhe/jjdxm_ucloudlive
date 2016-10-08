@@ -30,8 +30,8 @@ import java.util.Random;
 public class TestRoomLiveRepository {
 
     static int[] covers = new int[]{
-            R.mipmap.girl01, R.mipmap.girl02, R.mipmap.girl03, R.mipmap.girl04, R.mipmap.girl05,
-            R.mipmap.girl06, R.mipmap.girl07, R.mipmap.girl08, R.mipmap.girl09
+            R.mipmap.live_girl01, R.mipmap.live_girl02, R.mipmap.live_girl03, R.mipmap.live_girl04, R.mipmap.live_girl05,
+            R.mipmap.live_girl06, R.mipmap.live_girl07, R.mipmap.live_girl08, R.mipmap.live_girl09
     };
 
     static String[] chatRoomIds = new String[]{"218746635482562996", "218747106892972464", "218747152489251244", "218747179836113332", "218747226120257964", "218747262707171768", "218747179836113332", "218747226120257964", "218747262707171768"};

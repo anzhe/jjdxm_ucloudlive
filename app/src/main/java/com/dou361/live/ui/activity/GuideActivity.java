@@ -84,7 +84,7 @@ public class GuideActivity extends BaseActivity implements
         // 设置点和点之间的间隙
         mIndicator.setInterval(UIUtils.dip2px(40));
         // 设置点的图片
-        mIndicator.setIndicatorDrawable(UIUtils.getDrawable(R.drawable.guide_indicator));
+        mIndicator.setIndicatorDrawable(UIUtils.getDrawable(R.drawable.live_indicator_selector));
         mIndicator.setSelection(0);
         ll_indicator.addView(mIndicator);
         TypedArray icons = UIUtils.getTypedArray(R.array.guide_picture);

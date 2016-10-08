@@ -93,7 +93,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="56dp"
-                    android:background="@drawable/common_black_btn_bg"
+                    android:background="@drawable/live_black_selector"
                     android:text="注册"
                     android:textColor="@android:color/white"
                     />

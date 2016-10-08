@@ -114,7 +114,7 @@ public class RoomMessagesView extends RelativeLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        LayoutInflater.from(context).inflate(R.layout.widget_room_messages, this);
+        LayoutInflater.from(context).inflate(R.layout.live_widget_room_messages, this);
         recyclerView = (RecyclerView) findViewById(R.id.listview);
         editText = (MentionEditText) findViewById(R.id.edit_text);
         sendBtn = (Button) findViewById(R.id.btn_send);

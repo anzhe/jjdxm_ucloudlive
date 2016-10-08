@@ -11,7 +11,7 @@
         <!--房间标题栏-->
         <include
             android:id="@+id/toolbar"
-            layout="@layout/bar_room_title"/>
+            layout="@layout/live_bar_room_title"/>
 
         <!--房间聊天布局-->
         <com.dou361.live.ui.widget.RoomMessagesView
@@ -49,7 +49,7 @@
         <!--底部操作面板-->
         <include
             android:id="@+id/bottom_bar"
-            layout="@layout/bar_room_bottom"
+            layout="@layout/live_bar_room_bottom"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

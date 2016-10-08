@@ -72,7 +72,7 @@ public class RoomUserDetailsDialog extends DialogFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View view = inflater.inflate(R.layout.fragment_room_user_details, container, false);
+        View view = inflater.inflate(R.layout.dialog_room_user_details, container, false);
         unbinder = ButterKnife.bind(this, view);
         return view;
     }
@@ -124,7 +124,7 @@ public class RoomUserDetailsDialog extends DialogFragment {
         // Dialog dialog = new Dialog(getActivity());
         Dialog dialog = new Dialog(getActivity(), R.style.room_user_details_dialog);
         dialog.requestWindowFeature(Window.FEATURE_NO_TITLE); // must be called before set content
-        dialog.setContentView(R.layout.fragment_room_user_details);
+        dialog.setContentView(R.layout.dialog_room_user_details);
         dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
         dialog.setCanceledOnTouchOutside(true);
         // 设置宽度为屏宽、靠近屏幕底部。

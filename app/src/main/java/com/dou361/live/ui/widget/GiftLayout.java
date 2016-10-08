@@ -67,7 +67,7 @@ public class GiftLayout extends LinearLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        LayoutInflater.from(context).inflate(R.layout.widget_gift_layout, this);
+        LayoutInflater.from(context).inflate(R.layout.live_widget_gift_layout, this);
         ButterKnife.bind(this);
 
     }

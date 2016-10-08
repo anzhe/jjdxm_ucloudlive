@@ -59,7 +59,7 @@ public class LiveLeftGiftView extends RelativeLayout {
     }
 
     private void init(Context context, AttributeSet attrs) {
-        LayoutInflater.from(context).inflate(R.layout.widget_left_gift, this);
+        LayoutInflater.from(context).inflate(R.layout.live_widget_left_gift, this);
         ButterKnife.bind(this);
     }
 

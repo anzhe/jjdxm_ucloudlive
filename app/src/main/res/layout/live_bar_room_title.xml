@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/global_title_bar_height_top"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:id="@+id/ll_anchor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_vertical"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="10dp"
+        android:background="@drawable/live_shape_anchor_bg"
+        android:gravity="center_vertical"
+        android:orientation="horizontal">
+
+        <com.hyphenate.easeui.widget.EaseImageView
+            android:layout_width="@dimen/global_height_small"
+            android:layout_height="@dimen/global_height_small"
+            android:src="@drawable/ease_default_avatar"
+            app:ease_shape_type="round"
+            />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/global_margin_mid"
+            android:layout_marginRight="@dimen/global_margin_mid"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_username"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size1"/>
+
+            <TextView
+                android:id="@+id/audience_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:singleLine="true"
+                android:text=""
+                android:textColor="@android:color/white"
+                android:textSize="@dimen/text_size1"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/tv_follow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/global_margin_small"
+            android:background="@drawable/live_shape_follow_bg"
+            android:gravity="center"
+            android:padding="@dimen/global_margin_mid"
+            android:text="关注"
+            android:textColor="@android:color/white"
+            android:textSize="@dimen/text_size1"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="match_parent"
+        android:layout_marginLeft="5dp"
+        android:layout_marginRight="10dp"
+        android:layout_weight="1">
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/horizontal_recycle_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:layout_marginRight="@dimen/global_margin_mid"
+            android:minWidth="54dp"/>
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:gravity="right|center_vertical">
+
+        <ImageButton
+            android:id="@+id/img_bt_switch_camera"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:background="@mipmap/live_cam_switch"
+            android:visibility="gone"/>
+
+
+        <ImageButton
+            android:id="@+id/ib_close"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="10dp"
+            android:background="@mipmap/ic_arrow_close"
+            android:visibility="invisible"/>
+    </LinearLayout>
+
+</LinearLayout>

@@ -35,7 +35,7 @@ public class TestAnchorRepository {
     static {
         Context context = BaseApplication.getInstance().getApplicationContext();
         for(int i = 1; i <= SIZE; i++){
-            String name = "avatar_girl0"+i;
+            String name = "live_avatar_girl0"+i;
             int resId = context.getResources().getIdentifier(name,"mipmap",context.getPackageName());
             avatarlist.add(resId);
         }

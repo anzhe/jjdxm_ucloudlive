@@ -32,7 +32,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="8dp"
-                    android:src="@drawable/title_search_selector"/>
+                    android:src="@drawable/live_title_search_selector"/>
             </LinearLayout>
 
             <LinearLayout
@@ -50,7 +50,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="8dp"
-                    android:src="@drawable/title_msg_selector"/>
+                    android:src="@drawable/live_title_msg_selector"/>
             </LinearLayout>
         </LinearLayout>
 
@@ -58,7 +58,7 @@
             android:id="@+id/eiv_avatar"
             android:layout_width="60dp"
             android:layout_height="60dp"
-            android:src="@mipmap/avatar_girl01"
+            android:src="@mipmap/live_avatar_girl01"
             app:ease_shape_type="round"
             />
 
@@ -152,7 +152,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_normal_height"
         android:layout_marginTop="10dp"
-        android:background="@drawable/common_white_btn_bg"
+        android:background="@drawable/live_white_selector"
         android:clickable="true"
         >
 
@@ -226,7 +226,7 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/button_normal_height"
         android:layout_marginTop="10dp"
-        android:background="@drawable/common_white_btn_bg"
+        android:background="@drawable/live_white_selector"
         android:text="退出登录"
         android:textColor="@color/common_red"
         />

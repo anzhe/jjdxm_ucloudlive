@@ -24,7 +24,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="8dp"
-                android:src="@drawable/title_search_selector"/>
+                android:src="@drawable/live_title_search_selector"/>
         </LinearLayout>
 
         <android.support.design.widget.TabLayout
@@ -51,7 +51,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginRight="8dp"
-                android:src="@drawable/title_msg_selector"/>
+                android:src="@drawable/live_title_msg_selector"/>
         </LinearLayout>
     </LinearLayout>
 
