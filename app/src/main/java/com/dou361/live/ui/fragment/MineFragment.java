@@ -16,6 +16,7 @@ import android.widget.TextView;
 import com.dou361.baseutils.utils.LogUtils;
 import com.dou361.live.R;
 import com.dou361.live.bean.AnchorBean;
+import com.dou361.live.ui.activity.AboutActivity;
 import com.dou361.live.ui.activity.LoginActivity;
 import com.dou361.live.ui.activity.MessageActivity;
 import com.dou361.live.ui.activity.PersonDataActivity;
@@ -51,6 +52,8 @@ import butterknife.OnClick;
 public class MineFragment extends BaseFragment {
     @BindView(R.id.spinner)
     Spinner spinner;
+    @BindView(R.id.ll_about)
+    View ll_about;
     @BindView(R.id.frame_rate)
     TextView frameRateText;
     @BindView(R.id.tv_username)
@@ -91,9 +94,12 @@ public class MineFragment extends BaseFragment {
 
     }
 
-    @OnClick({R.id.eiv_avatar, R.id.iv_search, R.id.iv_msg, R.id.btn_logout})
+    @OnClick({R.id.ll_about, R.id.eiv_avatar, R.id.iv_search, R.id.iv_msg, R.id.btn_logout})
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.ll_about:
+                startActivity(AboutActivity.class);
+                break;
             case R.id.eiv_avatar:
                 startActivity(PersonDataActivity.class);
                 break;

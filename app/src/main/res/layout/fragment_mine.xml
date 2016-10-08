@@ -151,6 +151,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="@dimen/item_normal_height"
+        android:id="@+id/ll_about"
         android:layout_marginTop="10dp"
         android:background="@drawable/live_white_selector"
         android:clickable="true"
@@ -161,64 +162,72 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_marginLeft="10dp"
-            android:text="V1.0"
+            android:text="关于我们"
             android:textColor="@color/common_black"
             android:textSize="16sp"
             />
 
     </RelativeLayout>
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@android:color/white"
+        android:orientation="vertical">
 
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp"
-        android:layout_marginTop="20dp">
-
-        <TextView
-            android:layout_width="wrap_content"
+        <RelativeLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="直播码率"
-            android:textColor="#aa000000"
-            android:textSize="18sp"
-            />
+            android:layout_marginBottom="10dp"
 
-        <Spinner
-            android:id="@+id/spinner"
-            android:layout_width="wrap_content"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="直播码率"
+                android:textColor="#aa000000"
+                android:textSize="18sp"
+                />
+
+            <Spinner
+                android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:entries="@array/bitrate_types"
+                />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/frame_rate_container"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:entries="@array/bitrate_types"
-            />
-    </RelativeLayout>
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp">
 
-    <RelativeLayout
-        android:id="@+id/frame_rate_container"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="10dp"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="10dp">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="直播帧率"
+                android:textColor="#aa000000"
+                android:textSize="18sp"
+                />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="直播帧率"
-            android:textColor="#aa000000"
-            android:textSize="18sp"
-            />
-
-        <TextView
-            android:id="@+id/frame_rate"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:gravity="right"
-            android:text="@string/pref_default_video_frame_rate"
-            />
-    </RelativeLayout>
+            <TextView
+                android:id="@+id/frame_rate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:gravity="right"
+                android:text="@string/pref_default_video_frame_rate"
+                />
+        </RelativeLayout>
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_logout"
