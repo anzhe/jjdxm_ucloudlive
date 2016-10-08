@@ -9,6 +9,7 @@ import com.bumptech.glide.Glide;
 import com.dou361.live.R;
 import com.dou361.live.bean.LiveRoom;
 import com.dou361.live.ui.listener.OnItemClickRecyclerListener;
+import com.hyphenate.easeui.widget.EaseImageView;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,6 +36,8 @@ import butterknife.ButterKnife;
  */
 public class HotItemHolder extends BaseViewHolder<LiveRoom> {
 
+    @BindView(R.id.avatar)
+    EaseImageView avatar;
     @BindView(R.id.photo)
     ImageView imageView;
     @BindView(R.id.author)
@@ -53,6 +56,10 @@ public class HotItemHolder extends BaseViewHolder<LiveRoom> {
         liveRoom = getData();
         anchor.setText(liveRoom.getName());
         audienceNum.setText(liveRoom.getAudienceNum() + "人");
+        Glide.with(mContext)
+                .load(liveRoom.getAvatar())
+                .placeholder(R.color.placeholder)
+                .into(avatar);
         Glide.with(mContext)
                 .load(liveRoom.getCover())
                 .placeholder(R.color.placeholder)

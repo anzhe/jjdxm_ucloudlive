@@ -1,6 +1,11 @@
 package com.dou361.live.ui.activity;
 
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+
 import com.dou361.live.R;
+
+import butterknife.BindView;
 
 /**
  * ========================================
@@ -23,8 +28,19 @@ import com.dou361.live.R;
  * ========================================
  */
 public class PersonDataActivity extends BaseActivity {
+
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+
     @Override
     protected void initView() {
         setContentView(R.layout.activity_person_data);
+        toolbar.setNavigationOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                onBackPressed();
+            }
+        });
     }
+
 }

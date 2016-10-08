@@ -37,6 +37,10 @@ public class LiveRoom implements Serializable {
      */
     private int audienceNum;
     /**
+     * 头像
+     */
+    private int avatar;
+    /**
      * 封面
      */
     private int cover;
@@ -95,5 +99,13 @@ public class LiveRoom implements Serializable {
 
     public void setAnchorId(String anchorId) {
         this.anchorId = anchorId;
+    }
+
+    public int getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(int avatar) {
+        this.avatar = avatar;
     }
 }

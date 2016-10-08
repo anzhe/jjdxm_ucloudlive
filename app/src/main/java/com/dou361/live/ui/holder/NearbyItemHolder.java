@@ -43,7 +43,7 @@ public class NearbyItemHolder extends BaseViewHolder<LiveRoom> {
     TextView audienceNum;
 
     public NearbyItemHolder(Context mContext, OnItemClickRecyclerListener listener, View itemView) {
-        super(mContext,listener, itemView);
+        super(mContext, listener, itemView);
         ButterKnife.bind(this, itemView);
     }
 

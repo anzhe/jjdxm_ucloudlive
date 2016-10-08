@@ -20,6 +20,7 @@
         <com.hyphenate.easeui.widget.EaseImageView
             android:layout_width="@dimen/global_height_small"
             android:layout_height="@dimen/global_height_small"
+            android:id="@+id/eiv_anchor"
             android:src="@drawable/ease_default_avatar"
             app:ease_shape_type="round"
             />

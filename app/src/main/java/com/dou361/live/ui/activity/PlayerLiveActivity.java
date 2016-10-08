@@ -10,6 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.dou361.baseutils.utils.LogUtils;
 import com.dou361.customui.ui.AlertView;
 import com.dou361.live.R;
@@ -20,6 +21,7 @@ import com.hyphenate.EMValueCallBack;
 import com.hyphenate.chat.EMChatRoom;
 import com.hyphenate.chat.EMClient;
 import com.hyphenate.easeui.controller.EaseUI;
+import com.hyphenate.easeui.widget.EaseImageView;
 import com.ucloud.common.logger.L;
 import com.ucloud.player.widget.v2.UVideoView;
 
@@ -57,6 +59,8 @@ public class PlayerLiveActivity extends BaseRoomActivity implements UVideoView.C
     ProgressBar progressBar;
     @BindView(R.id.loading_text)
     TextView loadingText;
+    @BindView(R.id.eiv_anchor)
+    EaseImageView eiv_anchor;
     @BindView(R.id.cover_image)
     ImageView coverView;
     @BindView(R.id.tv_username)
@@ -78,7 +82,10 @@ public class PlayerLiveActivity extends BaseRoomActivity implements UVideoView.C
 
         anchorId = liveRoom.getAnchorId();
         usernameView.setText(anchorId);
-
+        Glide.with(mContext)
+                .load(liveRoom.getAvatar())
+                .placeholder(R.color.placeholder)
+                .into(eiv_anchor);
         mVideoView = (UVideoView) findViewById(R.id.videoview);
 
         mVideoView.setPlayType(UVideoView.PlayType.LIVE);

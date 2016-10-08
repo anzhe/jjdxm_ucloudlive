@@ -76,6 +76,8 @@ public class StartLiveActivity extends BaseRoomActivity
     TextView countdownView;
     @BindView(R.id.ll_anchor)
     View ll_anchor;
+    @BindView(R.id.eiv_anchor)
+    EaseImageView eiv_anchor;
     @BindView(R.id.tv_username)
     TextView usernameView;
     @BindView(R.id.tv_stop_username)
@@ -142,6 +144,7 @@ public class StartLiveActivity extends BaseRoomActivity
         roomId = TestRoomLiveRepository.getChatRoomId(EMClient.getInstance().getCurrentUser());
         anchorId = EMClient.getInstance().getCurrentUser();
         usernameView.setText(anchorId);
+        eiv_anchor.setImageResource(R.mipmap.live_avatar_girl09);
         initEnv();
     }
 
