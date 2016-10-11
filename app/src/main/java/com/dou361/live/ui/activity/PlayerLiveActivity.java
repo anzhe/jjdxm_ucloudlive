@@ -1,8 +1,7 @@
 package com.dou361.live.ui.activity;
 
-import android.graphics.Color;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
+import android.os.Bundle;
+import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.ProgressBar;
@@ -10,22 +9,16 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.bumptech.glide.Glide;
 import com.dou361.baseutils.utils.LogUtils;
 import com.dou361.customui.ui.AlertView;
 import com.dou361.live.R;
 import com.dou361.live.bean.LiveRoom;
+import com.dou361.live.ui.adapter.RoomPanlAdapter;
 import com.dou361.live.ui.config.StatusConfig;
-import com.dou361.live.utils.Utils;
-import com.hyphenate.EMValueCallBack;
-import com.hyphenate.chat.EMChatRoom;
-import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.controller.EaseUI;
-import com.hyphenate.easeui.widget.EaseImageView;
+import com.dou361.live.ui.fragment.RoomPanlFragment;
+import com.dou361.live.ui.fragment.TransparentFragment;
 import com.ucloud.common.logger.L;
 import com.ucloud.player.widget.v2.UVideoView;
-
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -50,44 +43,46 @@ import butterknife.OnClick;
  * <p>
  * ========================================
  */
-public class PlayerLiveActivity extends BaseRoomActivity implements UVideoView.Callback {
+public class PlayerLiveActivity extends BaseActivity implements UVideoView.Callback {
 
     private UVideoView mVideoView;
     @BindView(R.id.loading_layout)
     RelativeLayout loadingLayout;
     @BindView(R.id.progress_bar)
     ProgressBar progressBar;
-    @BindView(R.id.loading_text)
-    TextView loadingText;
-    @BindView(R.id.eiv_anchor)
-    EaseImageView eiv_anchor;
     @BindView(R.id.cover_image)
     ImageView coverView;
-    @BindView(R.id.tv_username)
-    TextView usernameView;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
+    @BindView(R.id.loading_text)
+    TextView loadingText;
+    @BindView(R.id.vp_panl)
+    ViewPager vp_panl;
+    RoomPanlFragment fragment;
+
+    @Override
+    public boolean openSliding() {
+        return false;
+    }
 
     @Override
     protected void initView() {
         setContentView(R.layout.activity_player_live);
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
-        mDrawerLayout.setScrimColor(Color.TRANSPARENT);
-        Utils.setDrawerRightEdgeSize(this, mDrawerLayout, 0.9f);
         LiveRoom liveRoom = (LiveRoom) getIntent().getSerializableExtra(StatusConfig.LiveRoom);
-        liveId = liveRoom.getId();
-        roomId = liveRoom.getChatroomId();
+
         int coverRes = liveRoom.getCover();
         coverView.setImageResource(coverRes);
 
-        anchorId = liveRoom.getAnchorId();
-        usernameView.setText(anchorId);
-        Glide.with(mContext)
-                .load(liveRoom.getAvatar())
-                .placeholder(R.color.placeholder)
-                .into(eiv_anchor);
-        mVideoView = (UVideoView) findViewById(R.id.videoview);
+        RoomPanlAdapter adapter = new RoomPanlAdapter(getSupportFragmentManager());
+        adapter.addFragment(new TransparentFragment());
+        fragment = new RoomPanlFragment();
+        Bundle mBundle = new Bundle();
+        mBundle.putSerializable(StatusConfig.LiveRoom, liveRoom);
+        mBundle.putInt(StatusConfig.ROOM_STYLE, StatusConfig.ROOM_STYLE_PLAYER);
+        fragment.setArguments(mBundle);
+        adapter.addFragment(fragment);
+        vp_panl.setAdapter(adapter);
+        vp_panl.setCurrentItem(adapter.getCount() - 1);
 
+        mVideoView = (UVideoView) findViewById(R.id.videoview);
         mVideoView.setPlayType(UVideoView.PlayType.LIVE);
         mVideoView.setPlayMode(UVideoView.PlayMode.NORMAL);
         mVideoView.setRatio(UVideoView.VIDEO_RATIO_FILL_PARENT);
@@ -98,39 +93,34 @@ public class PlayerLiveActivity extends BaseRoomActivity implements UVideoView.C
 //        mVideoView.setVideoPath(SystemConfig.ucloud_player_url + liveId);
         //临时固定地址使用
         mVideoView.setVideoPath("http://23340.live-vod.cdn.aodianyun.com/m3u8/0x0/merge/02235e76590a08db99d2296f8632c5cf.m3u8");
+
+
     }
 
 
     @Override
     protected void onResume() {
         super.onResume();
-        if (isMessageListInited)
-            messageView.refresh();
-        EaseUI.getInstance().pushActivity(this);
-        // register the event listener when enter the foreground
-        EMClient.getInstance().chatManager().addMessageListener(msgListener);
+        if (fragment != null) {
+            fragment.onResume();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // unregister this event listener when this activity enters the
-        // background
-        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
-
-        // 把此activity 从foreground activity 列表里移除
-        EaseUI.getInstance().popActivity(this);
+        if (fragment != null) {
+            fragment.onStop();
+        }
     }
 
 
     @Override
     protected void onDestroy() {
-        super.onDestroy();
-        EMClient.getInstance().chatroomManager().leaveChatRoom(roomId);
-
-        if (chatRoomChangeListener != null) {
-            EMClient.getInstance().chatroomManager().removeChatRoomChangeListener(chatRoomChangeListener);
+        if (fragment != null) {
+            fragment.destroy();
         }
+        super.onDestroy();
         if (mVideoView != null) {
             mVideoView.setVolume(0, 0);
             mVideoView.stopPlayback();
@@ -145,38 +135,8 @@ public class PlayerLiveActivity extends BaseRoomActivity implements UVideoView.C
         switch (what) {
             case UVideoView.Callback.EVENT_PLAY_START:
                 loadingLayout.setVisibility(View.INVISIBLE);
-                EMClient.getInstance().chatroomManager().joinChatRoom(roomId, new EMValueCallBack<EMChatRoom>() {
-                    @Override
-                    public void onSuccess(EMChatRoom emChatRoom) {
-                        chatroom = emChatRoom;
-                        addChatRoomChangeListenr();
-                        onMessageListInit();
-                    }
-
-                    @Override
-                    public void onError(int i, String s) {
-
-                    }
-                });
-
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (!isFinishing()) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    periscopeLayout.addHeart();
-                                }
-                            });
-                            try {
-                                Thread.sleep(new Random().nextInt(400) + 200);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }).start();
+                fragment.joinChatRoom();
+                fragment.addPeriscope();
                 break;
             case UVideoView.Callback.EVENT_PLAY_PAUSE:
                 break;
@@ -202,9 +162,9 @@ public class PlayerLiveActivity extends BaseRoomActivity implements UVideoView.C
         }
     }
 
-    @OnClick({R.id.img_bt_close})
+    @OnClick({R.id.btn_close})
     public void onClick(View v) {
-        if (v.getId() == R.id.img_bt_close) {
+        if (v.getId() == R.id.btn_close) {
             showAlertDialog();
         }
     }

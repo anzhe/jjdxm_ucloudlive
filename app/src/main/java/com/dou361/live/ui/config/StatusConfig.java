@@ -29,6 +29,9 @@ public class StatusConfig {
     public static final String CMD_GIFT = "cmd_gift";
     public static final String EXTRA_IS_BARRAGE_MSG = "is_barrage_msg";
     public static final String LiveRoom = "liveroom";
+    public static final String ROOM_STYLE = "room_style";
     public static final String ARG_ANCHOR = "anchor";
     public static final String ARG_IS_NORMAL = "isNormalStyle";
+    public static final int ROOM_STYLE_PLAYER = 2;
+    public static final int ROOM_STYLE_LIVE = 3;
 }

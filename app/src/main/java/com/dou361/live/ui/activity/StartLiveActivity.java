@@ -1,37 +1,34 @@
 package com.dou361.live.ui.activity;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.media.AudioManager;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.support.v4.widget.DrawerLayout;
-import android.view.Gravity;
+import android.support.v4.view.ViewPager;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.ScaleAnimation;
-import android.widget.Button;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
-import com.dou361.baseutils.utils.LogUtils;
 import com.dou361.baseutils.utils.UIUtils;
 import com.dou361.customui.ui.AlertView;
 import com.dou361.live.R;
 import com.dou361.live.bean.LiveRoom;
 import com.dou361.live.module.TestRoomLiveRepository;
+import com.dou361.live.ui.adapter.RoomPanlAdapter;
 import com.dou361.live.ui.config.LiveConfig;
+import com.dou361.live.ui.config.StatusConfig;
 import com.dou361.live.ui.config.SystemConfig;
-import com.dou361.live.utils.Utils;
-import com.hyphenate.EMValueCallBack;
-import com.hyphenate.chat.EMChatRoom;
+import com.dou361.live.ui.fragment.RoomPanlFragment;
+import com.dou361.live.ui.fragment.TransparentFragment;
+import com.dou361.live.ui.listener.OnLiveListener;
 import com.hyphenate.chat.EMClient;
-import com.hyphenate.easeui.controller.EaseUI;
 import com.hyphenate.easeui.widget.EaseAlertDialog;
 import com.hyphenate.easeui.widget.EaseImageView;
 import com.ucloud.common.util.DeviceUtils;
@@ -40,7 +37,6 @@ import com.ucloud.live.UStreamingProfile;
 import com.ucloud.live.widget.UAspectFrameLayout;
 
 import java.util.List;
-import java.util.Random;
 
 import butterknife.BindView;
 import butterknife.OnClick;
@@ -65,7 +61,7 @@ import butterknife.OnClick;
  * <p>
  * ========================================
  */
-public class StartLiveActivity extends BaseRoomActivity
+public class StartLiveActivity extends BaseActivity
         implements UEasyStreaming.UStreamingStateListener {
 
     @BindView(R.id.container)
@@ -74,34 +70,16 @@ public class StartLiveActivity extends BaseRoomActivity
     RelativeLayout startContainer;
     @BindView(R.id.countdown_txtv)
     TextView countdownView;
-    @BindView(R.id.ll_anchor)
-    View ll_anchor;
-    @BindView(R.id.eiv_anchor)
-    EaseImageView eiv_anchor;
-    @BindView(R.id.tv_username)
-    TextView usernameView;
     @BindView(R.id.tv_stop_username)
     TextView tv_stop_username;
     @BindView(R.id.eiv_stop_avatar)
     EaseImageView eiv_stop_avatar;
-    @BindView(R.id.tv_follow)
-    TextView tv_follow;
-    @BindView(R.id.btn_start)
-    Button startBtn;
     @BindView(R.id.finish_frame)
     View liveEndLayout;
-    @BindView(R.id.right_drawer)
-    View right_drawer;
     @BindView(R.id.cover_image)
     ImageView coverImage;
-    @BindView(R.id.img_bt_switch_camera)
-    ImageButton img_bt_switch_camera;
-    @BindView(R.id.img_bt_switch_light)
-    ImageButton lightSwitch;
-    @BindView(R.id.img_bt_switch_voice)
-    ImageButton voiceSwitch;
-    @BindView(R.id.drawer_layout)
-    DrawerLayout mDrawerLayout;
+    @BindView(R.id.vp_panl)
+    ViewPager vp_panl;
 
     protected UEasyStreaming mEasyStreaming;
     public static final int MSG_UPDATE_COUNTDOWN = 1;
@@ -116,6 +94,11 @@ public class StartLiveActivity extends BaseRoomActivity
     UEasyStreaming.UEncodingType encodingType;
 
     boolean isStarted;
+    RoomPanlFragment fragment;
+
+    private String liveId;
+    private String roomId;
+    private String anchorId;
 
     private Handler handler = new Handler() {
         @Override
@@ -129,22 +112,67 @@ public class StartLiveActivity extends BaseRoomActivity
     };
 
     @Override
+    public boolean openSliding() {
+        return false;
+    }
+
+    @Override
     protected void initView() {
         setContentView(R.layout.activity_start_live);
 
-        Utils.setDrawerRightEdgeSize(this, mDrawerLayout, 0.9f);
-        mDrawerLayout.openDrawer(Gravity.RIGHT);
-        mDrawerLayout.setScrimColor(Color.TRANSPARENT);
-        ll_anchor.setVisibility(View.INVISIBLE);
-        tv_follow.setVisibility(View.GONE);
-        img_bt_switch_camera.setVisibility(View.VISIBLE);
-        lightSwitch.setVisibility(View.VISIBLE);
-        voiceSwitch.setVisibility(View.VISIBLE);
+        RoomPanlAdapter adapter = new RoomPanlAdapter(getSupportFragmentManager());
+        adapter.addFragment(new TransparentFragment());
+        fragment = new RoomPanlFragment();
+        Bundle mBundle = new Bundle();
+        LiveRoom liveRoom = new LiveRoom();
         liveId = TestRoomLiveRepository.getLiveRoomId(EMClient.getInstance().getCurrentUser());
         roomId = TestRoomLiveRepository.getChatRoomId(EMClient.getInstance().getCurrentUser());
         anchorId = EMClient.getInstance().getCurrentUser();
-        usernameView.setText(anchorId);
-        eiv_anchor.setImageResource(R.mipmap.live_avatar_girl09);
+        liveRoom.setId(liveId);
+        liveRoom.setChatroomId(roomId);
+        liveRoom.setAnchorId(anchorId);
+        liveRoom.setAvatar(R.mipmap.live_avatar_girl09);
+        mBundle.putSerializable(StatusConfig.LiveRoom, liveRoom);
+        mBundle.putInt(StatusConfig.ROOM_STYLE, StatusConfig.ROOM_STYLE_LIVE);
+        fragment.setArguments(mBundle);
+        adapter.addFragment(fragment);
+        vp_panl.setAdapter(adapter);
+        vp_panl.setCurrentItem(adapter.getCount() - 1);
+        fragment.setOnLiveListener(new OnLiveListener() {
+            @Override
+            public void onCamreClick(View view) {
+                /**
+                 * 切换摄像头
+                 */
+                mEasyStreaming.switchCamera();
+            }
+
+            @Override
+            public void onLightClick(View view) {
+                /**
+                 * 打开或关闭闪关灯
+                 */
+                boolean succeed = mEasyStreaming.toggleFlashMode();
+                if (succeed) {
+                    view.setSelected(!view.isSelected());
+                }
+            }
+
+            @Override
+            public void onVoiceClick(View view) {
+                /**
+                 * 打开或关闭声音
+                 */
+                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
+                if (audioManager.isMicrophoneMute()) {
+                    audioManager.setMicrophoneMute(false);
+                    view.setSelected(false);
+                } else {
+                    audioManager.setMicrophoneMute(true);
+                    view.setSelected(true);
+                }
+            }
+        });
         initEnv();
     }
 
@@ -181,24 +209,9 @@ public class StartLiveActivity extends BaseRoomActivity
                 Toast.makeText(this, event.toString(), Toast.LENGTH_LONG).show();
                 break;
             case UEasyStreaming.State.START_RECORDING:
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        while (!isFinishing()) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    periscopeLayout.addHeart();
-                                }
-                            });
-                            try {
-                                Thread.sleep(new Random().nextInt(400) + 200);
-                            } catch (InterruptedException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                }).start();
+                if (fragment != null) {
+                    fragment.addPeriscope();
+                }
                 break;
         }
     }
@@ -237,17 +250,11 @@ public class StartLiveActivity extends BaseRoomActivity
                 .show();
     }
 
-    @OnClick({R.id.live_close_confirm, R.id.img_bt_switch_camera, R.id.btn_start, R.id.img_bt_close, R.id.img_bt_switch_voice, R.id.img_bt_switch_light})
-    public void onClick(View v) {
+    @OnClick({R.id.live_close_confirm, R.id.btn_start, R.id.btn_close})
+    public void onLiveClick(View v) {
         switch (v.getId()) {
             case R.id.live_close_confirm:
                 onBackPressed();
-                break;
-            case R.id.img_bt_switch_camera:
-                /**
-                 * 切换摄像头
-                 */
-                mEasyStreaming.switchCamera();
                 break;
             case R.id.btn_start:
                 /**
@@ -277,31 +284,8 @@ public class StartLiveActivity extends BaseRoomActivity
                     }
                 }.start();
                 break;
-            case R.id.img_bt_close:
+            case R.id.btn_close:
                 showAlertDialog();
-                break;
-            case R.id.img_bt_switch_voice:
-                AudioManager audioManager = (AudioManager) getSystemService(Context.AUDIO_SERVICE);
-                if (audioManager.isMicrophoneMute()) {
-                    audioManager.setMicrophoneMute(false);
-                    voiceSwitch.setSelected(false);
-                } else {
-                    audioManager.setMicrophoneMute(true);
-                    voiceSwitch.setSelected(true);
-                }
-                break;
-            case R.id.img_bt_switch_light:
-                /**
-                 * 打开或关闭闪关灯
-                 */
-                boolean succeed = mEasyStreaming.toggleFlashMode();
-                if (succeed) {
-                    if (lightSwitch.isSelected()) {
-                        lightSwitch.setSelected(false);
-                    } else {
-                        lightSwitch.setSelected(true);
-                    }
-                }
                 break;
         }
     }
@@ -309,9 +293,7 @@ public class StartLiveActivity extends BaseRoomActivity
     private void showConfirmCloseLayout() {
         //显示封面
         coverImage.setVisibility(View.VISIBLE);
-        right_drawer.setVisibility(View.GONE);
         liveEndLayout.setVisibility(View.VISIBLE);
-        mDrawerLayout.removeView(right_drawer);
         List<LiveRoom> liveRoomList = TestRoomLiveRepository.getLiveRoomList();
         for (LiveRoom liveRoom : liveRoomList) {
             if (liveRoom.getId().equals(liveId)) {
@@ -342,29 +324,12 @@ public class StartLiveActivity extends BaseRoomActivity
                 @Override
                 public void onAnimationEnd(Animation animation) {
                     countdownView.setVisibility(View.GONE);
-                    EMClient.getInstance()
-                            .chatroomManager()
-                            .joinChatRoom(roomId, new EMValueCallBack<EMChatRoom>() {
-                                @Override
-                                public void onSuccess(EMChatRoom emChatRoom) {
-                                    chatroom = emChatRoom;
-                                    addChatRoomChangeListenr();
-                                    onMessageListInit();
-                                    LogUtils.logTagName(TAG).log("-----加入聊天室成功-----");
-                                }
-
-                                @Override
-                                public void onError(int i, String s) {
-                                    UIUtils.showToastCenterShort("加入聊天室失败");
-                                    LogUtils.logTagName(TAG).log("-----加入聊天室失败-----" + s);
-                                }
-                            });
-
+                    fragment.joinChatRoom();
                     if (count == COUNTDOWN_END_INDEX && mEasyStreaming != null && !isShutDownCountdown) {
                         UIUtils.showToastCenterShort("直播开始！");
-                        mEasyStreaming.startRecording();
+//                        这里没有打开只是简单测试功能没有去推流的
+//                        mEasyStreaming.startRecording();
                         isStarted = true;
-                        ll_anchor.setVisibility(View.VISIBLE);
                     }
                 }
 
@@ -391,32 +356,25 @@ public class StartLiveActivity extends BaseRoomActivity
     protected void onResume() {
         super.onResume();
         mEasyStreaming.onResume();
-        if (isMessageListInited) messageView.refresh();
-        EaseUI.getInstance().pushActivity(this);
-        // register the event listener when enter the foreground
-        EMClient.getInstance().chatManager().addMessageListener(msgListener);
+        if (fragment != null) {
+            fragment.onResume();
+        }
     }
 
     @Override
     public void onStop() {
         super.onStop();
-        // unregister this event listener when this activity enters the
-        // background
-        EMClient.getInstance().chatManager().removeMessageListener(msgListener);
-
-        // 把此activity 从foreground activity 列表里移除
-        EaseUI.getInstance().popActivity(this);
+        if (fragment != null) {
+            fragment.onStop();
+        }
     }
 
     @Override
     protected void onDestroy() {
+        if (fragment != null) {
+            fragment.destroy();
+        }
         super.onDestroy();
         mEasyStreaming.onDestroy();
-
-        EMClient.getInstance().chatroomManager().leaveChatRoom(roomId);
-
-        if (chatRoomChangeListener != null) {
-            EMClient.getInstance().chatroomManager().removeChatRoomChangeListener(chatRoomChangeListener);
-        }
     }
 }
