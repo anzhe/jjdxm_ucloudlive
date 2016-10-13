@@ -15,7 +15,7 @@
 
 ## Introduction ##
 
-这是一款低仿映客直播的Android直播聊天应用，本项目通过使用ucloud的直播平台提供的sdk进行推流和拉流，使用环信IM来作为用户系统的管理直播聊天室中消息收发、发送礼物、弹幕、私信等功能。本项目旨在借用第三方直播平台提供的sdk方案快速搭建一款类似映客直播的安卓APP，项目中主要内容是抽取了聊天室的一个基类、和一些自定义view（视频点赞、礼物动画、弹幕动画、消息输入编辑工具栏等），更多关于接入直播的涉及的内容可自行阅读ucloud提供的直播方案，项目重点在于界面UI的模仿与实现。项目中没有真正提供一个后台去支持，发起直播没有真正去推流的，可以根据真正的环境去接入推流地址，观看直播，不是真正的直播地址，只是添加了一个点播地址进行播放，也是可以根据实际环境接入拉流地址的。
+这是一款低仿映客直播的Android直播聊天应用，本项目通过使用ucloud的直播平台提供的sdk进行推流和拉流，使用环信IM来作为用户系统的管理直播聊天室中消息收发、发送礼物、弹幕、私信等功能。本项目旨在借用第三方直播平台提供的sdk方案快速搭建一款类似映客直播的安卓APP，项目中主要内容是抽取了聊天室的一个基类、和一些自定义view（视频点赞、礼物动画、弹幕动画、消息输入编辑工具栏等），更多关于接入直播的涉及的内容可自行阅读ucloud提供的直播方案，项目重点在于界面UI的模仿与实现。项目中没有真正提供一个后台去支持，发起直播没有真正去推流的，可以根据真正的环境去接入推流地址，观看直播，不是真正的直播地址，只是添加了一个点播地址进行播放，也是可以根据实际环境接入拉流地址的。另外一个仿映客直播的Android直播聊天应用基于七牛直播平台的可以查看这里[jjdxm_pililive][pililiveurl]
 
 
 ## Features ##
@@ -63,6 +63,186 @@ ucloud直播平台注册并开通直播服务，创建一个直播频道，获�
 
 ## More Actions ##
 
+### 弹幕布局（相当于飘屏）使用 ###
+BarrageLayout
+
+默认弹幕是两条通道，通过队列去管理，在父类布局中设置弹幕的区域代码如下：
+
+	<!--弹幕布局-->
+    <com.dou361.live.ui.widget.BarrageLayout
+        android:id="@+id/barrage_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@id/message_view"
+        android:layout_marginBottom="10dp"/>
+
+子类布局设置如下：
+
+	<?xml version="1.0" encoding="utf-8"?>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	    android:layout_width="match_parent"
+	    android:layout_height="wrap_content"
+	    android:orientation="vertical"
+	    android:layout_marginBottom="4dp"
+	    >
+	    <RelativeLayout
+	        android:id="@+id/container1"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"/>
+	    <RelativeLayout
+	        android:layout_marginTop="4dp"
+	        android:id="@+id/container2"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"/>
+	</LinearLayout>
+
+
+添加一条弹幕的时候可以调用一下方法：
+
+	@BindView(R.id.barrage_layout)
+    BarrageLayout barrageLayout;
+
+	/**
+     * 弹幕内容，弹幕昵称
+     */
+	barrageLayout.addBarrage(String msgContent, String username)
+
+### 视频点赞动画布局（贝塞尔曲线动画） ###
+
+BezierEvaluator
+PeriscopeLayout
+
+在布局中设置视频点击区域如下：
+
+	<!--视频点赞布局-->
+    <com.dou361.live.ui.widget.PeriscopeLayout
+        android:id="@+id/periscope_layout"
+        android:layout_width="150dp"
+        android:layout_height="190dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="42dp"/>
+
+一般默认触摸到屏幕就触发一次点赞，所以设置根布局的触摸监听就好了，注意这里不能设置点击事件，否则会把子类的点击事件给拦截了，代码如下：
+
+	@BindView(R.id.root_layout)
+    View root_layout;
+	@BindView(R.id.periscope_layout)
+    PeriscopeLayout periscopeLayout;
+
+	root_layout.setOnTouchListener(new View.OnTouchListener() {
+            @Override
+            public boolean onTouch(View v, MotionEvent event) {
+                //根布局点赞
+                periscopeLayout.addHeart();
+                return false;
+            }
+        });
+
+### 条状礼物布局动画 ###
+
+GiftLayout
+LiveLeftGiftView
+条状礼物布局，默认设置两条通道来进行显示动画，多次的动画加入到队列中，每加载完一条动画就从队列中继续获取，在父类布局中设置如下：
+
+	<!--礼物布局-->
+    <com.dou361.live.ui.widget.GiftLayout
+        android:id="@+id/gift_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginBottom="5dp"/>
+
+子类布局设置如下：
+
+	<?xml version="1.0" encoding="utf-8"?>
+	<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	              android:layout_width="match_parent"
+	              android:layout_height="wrap_content"
+	              android:layout_marginBottom="4dp"
+	              android:orientation="vertical">
+	
+	    <!--礼物动画-->
+	    <com.dou361.live.ui.widget.LiveLeftGiftView
+	        android:id="@+id/left_gift_view1"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="4dp"
+	        android:visibility="invisible"/>
+	
+	    <!--礼物动画-->
+	    <com.dou361.live.ui.widget.LiveLeftGiftView
+	        android:id="@+id/left_gift_view2"
+	        android:layout_width="wrap_content"
+	        android:layout_height="wrap_content"
+	        android:layout_marginBottom="5dp"
+	        android:visibility="invisible"/>
+	</LinearLayout>
+
+发起礼物动画代码如下：
+
+	@BindView(R.id.gift_layout)
+    GiftLayout giftLayout;
+
+	/**
+     * 礼物内容，礼物昵称
+     */
+	giftLayout.showLeftGiftVeiw(Activity activity, String name, String url)
+
+### 艾特某人的功能 ###
+一个能识别@xxxx标志从而整块选择与删除的输入框控件，艾特内容组成一块，删除整个，添加整个
+MentionEditText
+在布局中设置如下：
+
+	<com.dou361.live.ui.widget.MentionEditText
+            android:id="@+id/edit_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:hint="说点什么吧..."
+            android:layout_weight="1"
+            android:maxLines="3"
+            android:minHeight="36dp"
+            android:paddingLeft="3dp"
+            android:paddingRight="1dp"
+            android:layout_marginLeft="3dp"
+            android:layout_marginRight="3dp"
+            android:textSize="18sp"
+            android:background="#fff"
+            />
+
+代码中设置如下：
+
+	/**
+     * 编辑框
+     */
+    MentionEditText editText;
+
+	/**输入框文本输入监听*/
+    editText.setMentionTextColor(Color.RED); //optional, set highlight color of mention string
+    editText.setPattern("@[\\u4e00-\\u9fa5\\w\\-]+"); //optional, set regularExpression
+
+获取艾特的集合内容
+
+	/**这里是@的集合*/
+    List<String> temp = editText.getMentionList(true);
+
+
+### 聊天室布局 ###
+
+RoomMessagesView
+
+聊天室布局设置如下：
+
+	<!--房间聊天布局-->
+    <com.dou361.live.ui.widget.RoomMessagesView
+        android:id="@+id/message_view"
+        android:layout_width="match_parent"
+        android:layout_height="170dp"
+        android:layout_alignParentBottom="true"
+        android:visibility="invisible"/>
+
+可以自行修改传入消息集合的Bean
+
 ## ChangeLog ##
 
 ## About Author ##
@@ -101,6 +281,7 @@ If you find any bug when using project, please report [here][issues]. Thanks for
 [github]:https://github.com/jjdxmashl/
 [project]:https://github.com/jjdxmashl/jjdxm_ucloudlive/
 [issues]:https://github.com/jjdxmashl/jjdxm_ucloudlive/issues/new
+[pililiveurl]:https://github.com/jjdxmashl/jjdxm_pililive/
 [downapk]:https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/apk/app-debug.apk
 [lastaar]:https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/release/jjdxm-ucloudlive-1.0.0.aar
 [lastjar]:https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/release/jjdxm-ucloudlive-1.0.0.jar

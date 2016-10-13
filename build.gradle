@@ -34,7 +34,6 @@ ext {
   jjdxm_versionName = "1.0.0"
   jjdxm_v4 = 'com.android.support:support-v4:23.3.0'
   jjdxm_v7 = 'com.android.support:appcompat-v7:23.3.0'
-  jjdxm_v7_alpha1 = 'com.android.support:appcompat-v7:23.3.0-alpha1'
   jjdxm_v7_preference = 'com.android.support:preference-v7:23.3.0'
   jjdxm_design = 'com.android.support:design:23.3.0'
 }
