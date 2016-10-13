@@ -237,6 +237,6 @@
         android:layout_marginTop="10dp"
         android:background="@drawable/live_blue_selector"
         android:text="退出登录"
-        android:textColor="@color/common_red"
+        android:textColor="@android:color/white"
         />
 </LinearLayout>

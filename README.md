@@ -15,20 +15,51 @@
 
 ## Introduction ##
 
+这是一款低仿映客直播的Android直播聊天应用，本项目通过使用ucloud的直播平台提供的sdk进行推流和拉流，使用环信IM来作为用户系统的管理直播聊天室中消息收发、发送礼物、弹幕、私信等功能。本项目旨在借用第三方直播平台提供的sdk方案快速搭建一款类似映客直播的安卓APP，项目中主要内容是抽取了聊天室的一个基类、和一些自定义view（视频点赞、礼物动画、弹幕动画、消息输入编辑工具栏等），更多关于接入直播的涉及的内容可自行阅读ucloud提供的直播方案，项目重点在于界面UI的模仿与实现。项目中没有真正提供一个后台去支持，发起直播没有真正去推流的，可以根据真正的环境去接入推流地址，观看直播，不是真正的直播地址，只是添加了一个点播地址进行播放，也是可以根据实际环境接入拉流地址的。
 
 
 ## Features ##
+
+1.仿映客部分UI
+2.发起直播
+3.观看主播直播
+4.直播平台方案之一的简单实现参考
+5.直播聊天室技术点实现案例参考
+6.艾特聊天室成员的实现
+
 
 ## Screenshots ##
 
 <img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon01.png" width="300"> 
 <img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon02.png" width="300"> 
- 
+<img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon03.png" width="300"> 
+<img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon04.png" width="300">
+<img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon05.png" width="300"> 
+<img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon06.png" width="300">
+<img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon07.png" width="300"> 
+<img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon08.png" width="300">
+<img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon09.png" width="300"> 
+<img src="https://raw.githubusercontent.com/jjdxmashl/jjdxm_ucloudlive/master/screenshots/icon10.png" width="300"> 
+
+
 ## Download ##
 
 [demo apk下载][downapk]
 
 ## Get Started ##
+
+### step1 ###
+准备工作
+
+ucloud直播平台注册并开通直播服务，创建一个直播频道，获取推流地址和拉流地址，下载直播SDK或者用项目中已经接入的SDK
+
+环信IM平台注册并创建一个APP，配置相应的参数，获取APP的key和其他信息
+
+### step2 ###
+
+将获取到的推流和拉流地址分别接入到项目中，也可以根据实际项目，通过后台去创建直播，获取直播推流地址来发起直播，获取拉流地址来播放直播
+
+接入环信IM的账号信息
 
 ## More Actions ##
 
